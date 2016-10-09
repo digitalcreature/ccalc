@@ -41,7 +41,7 @@ double p_sum() {
 	double r = p_product();
 	skipspace();
 	while (*s == '+' || *s == '-') {
-		op =*s;
+		op =* s;
 		s++;
 		skipspace();
 		if (op == '+')
@@ -58,7 +58,7 @@ double p_product() {
 	double r = p_negate();
 	skipspace();
 	while (*s == '*' || *s == '/') {
-		op =*s;
+		op =* s;
 		s++;
 		skipspace();
 		if (op == '*')
@@ -120,11 +120,21 @@ double p_number() {
 	double r = 0;
 	if (*s == '+') { *s++; skipspace(); }
 	if (*s == '-') { sign = -1; *s++; skipspace(); }
-	if (!isdigit(*s)) longjmp(abortpoint, 2);
+	if (!isdigit(*s) && *s != '.') longjmp(abortpoint, 2);
 	while (isdigit(*s)) {
 		r *= 10;
 		r += *s - '0';
 		s++;
+	}
+	if (*s == '.') {
+		double e = 1;
+		s ++;
+		if (!isdigit(*s)) longjmp(abortpoint, 2);
+		while (isdigit(*s)) {
+			e *= 10;
+			r += (*s - '0') / e;
+			s++;
+		}
 	}
 	return r * sign;
 }
