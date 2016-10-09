@@ -12,6 +12,7 @@ static char *s;
 double p_expression();
 double p_sum();
 double p_product();
+double p_negate();
 double p_exponent();
 double p_value();
 double p_number();
@@ -54,19 +55,30 @@ double p_sum() {
 
 double p_product() {
 	char op;
-	double r = p_exponent();
+	double r = p_negate();
 	skipspace();
 	while (*s == '*' || *s == '/') {
 		op =*s;
 		s++;
 		skipspace();
 		if (op == '*')
-			r *= p_exponent();
+			r *= p_negate();
 		else
-			r /= p_exponent();
+			r /= p_negate();
 		skipspace();
 	}
 	return r;
+}
+
+double p_negate() {
+	if (*s == '-') {
+		s ++;
+		skipspace();
+		return - p_exponent();
+	}
+	else {
+		return p_exponent();
+	}
 }
 
 double p_exponent() {
