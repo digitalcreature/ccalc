@@ -2,6 +2,7 @@
 #include "eval.h"
 #include <stdio.h>
 #include <setjmp.h>
+#include <math.h>
 #include <ctype.h>
 
 //globals? in my c???
@@ -11,6 +12,7 @@ static char *s;
 double p_expression();
 double p_sum();
 double p_product();
+double p_exponent();
 double p_value();
 double p_number();
 
@@ -52,16 +54,29 @@ double p_sum() {
 
 double p_product() {
 	char op;
-	double r = p_value();
+	double r = p_exponent();
 	skipspace();
 	while (*s == '*' || *s == '/') {
 		op =*s;
 		s++;
 		skipspace();
 		if (op == '*')
-			r *= p_value();
+			r *= p_exponent();
 		else
-			r /= p_value();
+			r /= p_exponent();
+		skipspace();
+	}
+	return r;
+}
+
+double p_exponent() {
+	double r = p_value();
+	skipspace();
+	while (*s == '^') {
+		s++;
+		skipspace();
+		double e = p_exponent();
+		r = pow(r, e);
 		skipspace();
 	}
 	return r;
