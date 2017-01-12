@@ -119,7 +119,7 @@ double p_number() {
 	int sign = 1;
 	double r = 0;
 	if (*s == '+') { *s++; skipspace(); }
-	if (*s == '-') { sign = -1; *s++; skipspace(); }
+	else if (*s == '-') { sign = -1; *s++; skipspace(); }
 	if (!isdigit(*s) && *s != '.') longjmp(abortpoint, 2);
 	while (isdigit(*s)) {
 		r *= 10;
