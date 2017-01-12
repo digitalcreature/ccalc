@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 	int error;
 	while (status >= 0) {
 		if ((error = eval(line, &x))) {
-			printf("syntax error: %d\n", error);
+			printf("syntax error\n");
 		}
 		else {
 			printf(" = %lf\n", x);
